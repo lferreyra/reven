@@ -6,7 +6,7 @@ const BASE_URL = 'https://argautos.com/api/v1';
 export type Brand = { id: number; name: string; slug: string };
 export type AutoModel = { id: number; name: string; slug: string; brand_id: number };
 export type Version = { id: number; name: string; slug: string; model_id: number };
-export type Valuation = { id: number; year: number; price: string; currency: string };
+export type Valuation = { id: number; year: number; price: string; currency: string; acara_price?: string | null };
 
 const STATIC_BRANDS: Brand[] = ARG_BRANDS.map((name, i) => ({
   id: i + 5000,

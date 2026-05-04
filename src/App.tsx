@@ -35,7 +35,7 @@ function AppContent() {
               <Marketplace />
             </ProtectedRoute>
           } />
-          <Route path="/vehicle/:id" element={
+          <Route path="/vehicle/:slug" element={
             <ProtectedRoute>
               <VehicleDetail />
             </ProtectedRoute>

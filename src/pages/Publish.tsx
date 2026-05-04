@@ -69,20 +69,20 @@ export function Publish() {
         if (vehicle && vehicle.sellerId === user.uid) {
           setIsEditMode(true);
           setFormData({
-            brand: vehicle.brand,
-            model: vehicle.model,
-            version: vehicle.version,
-            year: vehicle.year,
-            km: vehicle.km,
-            condition: vehicle.condition,
-            fuelType: vehicle.fuelType,
-            transmission: vehicle.transmission,
-            bodyType: vehicle.bodyType,
-            color: vehicle.color,
-            province: vehicle.province,
-            city: vehicle.city,
-            price: vehicle.price,
-            currency: vehicle.currency,
+            brand: vehicle.brand || '',
+            model: vehicle.model || '',
+            version: vehicle.version || '',
+            year: String(vehicle.year || ''),
+            km: String(vehicle.km || ''),
+            condition: vehicle.condition || 'USADO',
+            fuelType: vehicle.fuelType || '',
+            transmission: vehicle.transmission || '',
+            bodyType: vehicle.bodyType || '',
+            color: vehicle.color || '',
+            province: vehicle.province || '',
+            city: vehicle.city || '',
+            price: String(vehicle.price || ''),
+            currency: vehicle.currency || 'ARS',
             description: vehicle.description || '',
             hasVTV: vehicle.hasVTV || false,
             hasPatenteAlDay: vehicle.hasPatenteAlDay || false,
@@ -90,8 +90,9 @@ export function Publish() {
             officialService: vehicle.officialService || false,
             gncObleaVigente: vehicle.gncObleaVigente || false,
           });
-          if (vehicle.inspection) {
-            setInspection(vehicle.inspection as InspectionFormData);
+          const inspData = vehicle.inspectionData || vehicle.inspection;
+          if (inspData) {
+            setInspection(inspData as InspectionFormData);
           }
           if (vehicle.photos) {
             setExistingPhotos(vehicle.photos);
@@ -774,7 +775,7 @@ export function Publish() {
                               )}
                             </span>
                             <span className="font-bold text-right tracking-tighter text-lg">
-                              $ {formatArgentineNumber(val.price)}
+                              $ {val.acara_price ? formatArgentineNumber(val.acara_price) : formatArgentineNumber(val.price)}
                             </span>
                             <span className="text-right text-xs font-bold text-muted-foreground uppercase">
                               {val.currency || 'ARS'}

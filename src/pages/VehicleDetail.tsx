@@ -12,16 +12,19 @@ import { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '@/src/lib/firebase';
 import type { Vehicle } from '@/src/types';
+import { extractIdFromSlug } from '@/src/lib/seo';
 
 import { MOCK_VEHICLES_FALLBACK } from '@/src/data/mock-vehicles';
 
 export function VehicleDetail() {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [activePhoto, setActivePhoto] = useState(0);
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+
+  const id = slug ? extractIdFromSlug(slug) : undefined;
 
   useEffect(() => {
     if (!id) { setNotFound(true); setLoading(false); return; }

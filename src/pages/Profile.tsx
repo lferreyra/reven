@@ -21,6 +21,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getVehiclesBySeller, updateVehicleStatus, pauseAllSellerListings } from '@/src/lib/vehicles';
 import { isTrialUser, isTrialExpired, getTrialDaysRemaining, getTrialEndDate, TRIAL_MAX_LISTINGS } from '@/src/lib/trial';
 import { useGeoRef } from '@/src/hooks/useGeoRef';
+import { getVehiclePath } from '@/src/lib/seo';
 import type { Vehicle } from '../types';
 
 function StatCard({ icon: Icon, label, value, accent = false }: { icon: any; label: string; value: string | number; accent?: boolean }) {
@@ -380,7 +381,10 @@ export function Profile() {
                       markingSoldId={markingSoldId}
                       onToggle={handleToggleStatus}
                       onMarkSold={handleMarkSold}
-                      onNavigate={(id) => navigate(`/vehicle/${id}`)}
+                      onNavigate={(id) => {
+                        const v = list.find(x => x.id === id);
+                        if (v) navigate(getVehiclePath(v.brand, v.model, v.version, v.year, id));
+                      }}
                       onEdit={(id) => navigate(`/publish?edit=${id}`)}
                     />
                   </TabsContent>
@@ -388,7 +392,10 @@ export function Profile() {
               })}
             </Tabs>
           ) : (
-            <VehicleGrid listings={visibleListings} isOwnProfile={false} togglingId={null} markingSoldId={null} onToggle={() => {}} onMarkSold={() => {}} onNavigate={(id) => navigate(`/vehicle/${id}`)} onEdit={() => {}} />
+            <VehicleGrid listings={visibleListings} isOwnProfile={false} togglingId={null} markingSoldId={null} onToggle={() => {}} onMarkSold={() => {}} onNavigate={(id) => {
+              const v = visibleListings.find(x => x.id === id);
+              if (v) navigate(getVehiclePath(v.brand, v.model, v.version, v.year, id));
+            }} onEdit={() => {}} />
           )}
         </div>
       </main>
